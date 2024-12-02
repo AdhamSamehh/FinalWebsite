@@ -4,14 +4,8 @@ const express = require('express');
 const server = express();
 const port = 8888;
 server.use(express.json());
-
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./database.db');
-
-
-
-//DATABASE TABLES
-// Creating User table
 const createusertable = `
   CREATE TABLE IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,6 +32,17 @@ server.post('/user/register', (req, res) => {
         } else {
             return res.status(200).send("Registration successful");
         }
+    })
+})
+
+server.post('/user/login', (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+    db.get(`SELECT * FROM USER WHERE EMAIL = '${email}' AND PASSWORD = '${password}'`, (err, row) => {
+        if (err || !row)
+            return res.status(401).send("Invaild Credentials!")
+        else
+            return res.status(200).send("Login Successful")
     })
 })
 
