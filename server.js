@@ -1,21 +1,9 @@
 const express = require('express');
-// const db_access = require('./db.js');
-// const db = db_access.db;
 const server = express();
 const port = 8888;
 server.use(express.json());
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./database.db');
-const createusertable = `
-  CREATE TABLE IF NOT EXISTS user (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL, 
-    email TEXT UNIQUE NOT NULL, 
-    password TEXT NOT NULL,
-    age INTEGER
-    )`;
-
-
+const db_access = require('./myDB.js')
+const db = db_access.db
 
 server.post('/user/register', (req, res) => {
     let name = req.body.name;
@@ -49,7 +37,7 @@ server.post('/user/login', (req, res) => {
 
 
 db.serialize(() => {
-    db.exec(createusertable, (err) => {
+    db.run(db_access.createusertable, (err) => {
         if (err) {
             console.error("Error creating user table:", err);
         } else {
