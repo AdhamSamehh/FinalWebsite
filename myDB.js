@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('FinalDatabase.db');
 
-const createPsertable = `
+const createUsertable = `
   CREATE TABLE IF NOT EXISTS user (
     userID INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL, 

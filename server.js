@@ -1,6 +1,6 @@
 const express = require('express');
 const server = express();
-const port = 8888;
+const port = 888;
 server.use(express.json());
 const db_access = require('./myDB.js')
 const db = db_access.db
@@ -31,6 +31,24 @@ server.post('/user/login', (req, res) => {
             return res.status(401).send("Invaild Credentials!")
         else
             return res.status(200).send("Login Successful")
+    })
+})
+
+server.post('/products/addproducts', (req, res) => {
+    const product = req.body.product
+    const price = req.body.price
+    const category = req.body.category
+    const description = req.body.description
+    const quantity = parseInt(req.body.quantity)
+
+    db.run(express.query, [product, price, category, description, quantity], (err) => {
+
+        if (err) {
+            console.log(err)
+            return res.send(err)
+        } else {
+            return res.send('Flight added sucessfully')
+        }
     })
 })
 
